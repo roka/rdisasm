@@ -134,10 +134,32 @@
 #define MOVSXD_63   0x63    // r32/64, R/m32 Move with sign-extension
 
 #define PUSH_68     0x68    // imm16/32
-
 #define IMUL_69     0x69    // signed mul
-#define INSB_6c     0x6C    // Input from Port to String
+#define PUSH_6a     0x6a    // byte
+#define IMUL_6b     0x6b
+#define INSB_6c     0x6c    // Input from Port to String
+#define INSD_6d     0x6d
+#define OUTSB_6e    0x6e
+#define OUTSD_6f    0x6f
+
+// Jumps
+#define JO_70       0x70
+#define JNO_71      0x71
+#define JB_72       0x72
+#define JNB_73      0x73
+#define JZ_74       0x74
+#define JNZ_75      0x75
+#define JBE_76      0x76
+#define JNBE_77     0x77
 #define JS_78       0x78
+#define JNS_79      0x79
+#define JP_7a       0x7a
+#define JNP_7b      0x7b
+#define JL_7c       0x7c
+#define JNL_7d      0x7d
+#define JLE_7e      0x7e
+#define JNLE_7f     0x7f
+
 
 /* B8+r MOV imm16/32/64 */
 #define MOV_RAX_B8  0xb8

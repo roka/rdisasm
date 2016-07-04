@@ -140,10 +140,60 @@ class TestDisassembleRaw(unittest.TestCase):
                 inst)
             disasm.stdout.close()
 
-    # IMUL 0x69
+    # IMUL 0x69, 0x6b
     def test_imul(self):
-        self.create_bin("691e12341234")
-        inst = "imul\tebx, DWORD [rsi], dword 0x34123412"
+        self.create_bin("691e123412346b1dffffffff11")
+        inst = "imul\tebx, DWORD [rsi], dword 0x34123412\n" +\
+            "imul\tebx, DWORD [rip+0xffffffff], byte 0x11"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
+    # PUSH 0x6a byte
+    def test_push_byte(self):
+        self.create_bin("6a116a22")
+        inst = "push\tbyte 0x11\n" +\
+            "push\tbyte 0x22"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
+    # INSB/D OUTSB/D
+    def test_insb(self):
+        self.create_bin("6c6d6e6f")
+        inst = "insb\tbyte [rdi], dx\n" +\
+            "insd\tdword [rdi], dx\n" +\
+            "outsb\tdx, byte [rsi]\n" +\
+            "outsd\tdx, dword [rsi]"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
+    # Jumps
+    def test_jumps(self):
+        self.create_bin("70557155725573557455755576557755785579557a557b557c557d557fff")
+        inst = \
+        "JO\t57\n" +\
+        "JNO\t59\n" +\
+        "JB\t5b\n" +\
+        "JNB\t5d\n" +\
+        "JZ\t5f\n" +\
+        "JNZ\t61\n" +\
+        "JBE\t63\n" +\
+        "JNBE\t65\n" +\
+        "JS\t67\n" +\
+        "JNS\t69\n" +\
+        "JP\t6b\n" +\
+        "JNP\t6d\n" +\
+        "JL\t6f\n" +\
+        "JNL\t71\n" +\
+        "JNLE\t1d"
 
         disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
         self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),

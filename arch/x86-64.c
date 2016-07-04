@@ -191,6 +191,14 @@ __inline imm1632(FILE *file)
     printf("dword 0x%x", u32);
 }
 
+__inline imm8(FILE *file)
+{
+    uint32_t u8;
+    fread(&u8, sizeof(uint8_t), 1, file);
+    printf("byte 0x%x", u8 & 0xff);
+}
+
+
 /* Check for segment override. returns 1 if found */
 int segmentOverride(char byte)
 {
@@ -438,13 +446,63 @@ void disasm(uint64_t first_asm, FILE *file)
         else if( u8 == PUSH_68 ) {
             printf("push\t");
             imm1632(file);
+            printf("\n");
         }
 
+        /* IMUL - 0x69 */
         else if( u8 == IMUL_69 ) {
             printf("imul\t");
             r163264_rm163264(file, rex);
             printf(", ");
             imm1632(file);
+            printf("\n");
+        }
+
+        else if( u8 == PUSH_6a ) {
+            printf("push\t");
+            imm8(file);
+            printf("\n");
+        }
+
+        else if( u8 == IMUL_6b ) {
+            printf("imul\t");
+            r163264_rm163264(file, rex);
+            printf(", ");
+            imm8(file);
+            printf("\n");
+        }
+
+        else if( u8 == INSB_6c ) {
+            printf("insb\tbyte [rdi], dx\n");
+        } else if( u8 == INSD_6d ) {
+            printf("insd\tdword [rdi], dx\n");
+        } else if( u8 == OUTSB_6e ) {
+            printf("outsb\tdx, byte [rsi]\n");
+        } else if( u8 == OUTSD_6f ) {
+            printf("outsd\tdx, dword [rsi]\n");
+        }
+
+        else if( u8 >= JO_70 && u8 <= JNLE_7f ) {
+            switch(u8) {
+                case JO_70: printf("JO\t"); break;
+                case JNO_71: printf("JNO\t"); break;
+                case JB_72: printf("JB\t"); break;
+                case JNB_73: printf("JNB\t"); break;
+                case JZ_74: printf("JZ\t"); break;
+                case JNZ_75: printf("JNZ\t"); break;
+                case JBE_76: printf("JBE\t"); break;
+                case JNBE_77: printf("JNBE\t"); break;
+                case JS_78: printf("JS\t"); break;
+                case JNS_79: printf("JNS\t"); break;
+                case JP_7a: printf("JP\t"); break;
+                case JNP_7b: printf("JNP\t"); break;
+                case JL_7c: printf("JL\t"); break;
+                case JNL_7d: printf("JNL\t"); break;
+                case JLE_7e: printf("JLE\t"); break;
+                case JNLE_7f: printf("JNLE\t"); break;
+            }
+            fread(&u8, sizeof(uint8_t), 1, file);
+            printf("%x\n", (ftell(file)+u8-first_asm)&0xff);
         }
         /* B8+r MOV imm16/32/64 */
         else if( u8 >= MOV_RAX_B8  && u8 <= MOV_RDI_B8) {
