@@ -319,6 +319,12 @@ void disasm(uint64_t first_asm, FILE *file)
             pattern1( u8-ADC_10, file, rex);
         }
 
+        /* SBB - Subtraction with borrow 0x18-0x1c */
+        else if( u8 >= SBB_18 && u8 <= SBB_1d ) {
+            printf("sbb\t");
+            pattern1( u8-SBB_18, file, rex);
+        }
+
         /* REX 0x40-0x4f */
         else if( u8 == REX_40 ) {
             rex |= 1 << REX;

@@ -90,7 +90,7 @@
 
 // Subtraction with borrow
 #define SBB_18  0x18
-#define SBB_1c  0x1c
+#define SBB_1d  0x1d
 
 // Logical AND
 #define AND_20  0x20
