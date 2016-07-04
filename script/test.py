@@ -8,7 +8,6 @@ class TestDisassembleRaw(unittest.TestCase):
     def create_bin(self, data):
         v=str()
         f=open("tmp.bin", 'wb')
-        string=str()
 
         for i in data:
             v = v + i
@@ -23,12 +22,14 @@ class TestDisassembleRaw(unittest.TestCase):
         disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
         self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
             "ADD\tDWORD [rcx], DL")
+        disasm.stdout.close()
 
     def test_or(self):
         self.create_bin("0811")
         disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
         self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
             "OR\tDWORD [rcx], DL")
+        disasm.stdout.close()
 
 if __name__ == "__main__":
     unittest.main()
