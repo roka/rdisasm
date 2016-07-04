@@ -421,9 +421,9 @@ void disasm(uint64_t first_asm, FILE *file)
             } else {
                 fread( &u32, sizeof(uint32_t), 1, file);
                 if(rex >> REX_B & 1 ) // new registers
-                    printf("mov\t%s, 0x%lx\n", regs32_rex[(u8-MOV_RAX_B8)], u32);
+                    printf("mov\t%s, 0x%x\n", regs32_rex[(u8-MOV_RAX_B8)], u32);
                 else
-                    printf("mov\t%s, 0x%lx\n", regs32[(u8-MOV_RAX_B8)], u32);
+                    printf("mov\t%s, 0x%x\n", regs32[(u8-MOV_RAX_B8)], u32);
             }
         }
 
