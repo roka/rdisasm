@@ -504,6 +504,32 @@ void disasm(uint64_t first_asm, FILE *file)
             fread(&u8, sizeof(uint8_t), 1, file);
             printf("0x%x\n", ((ftell(file)+u8&0xff)-first_asm));
         }
+
+        else if( u8 == 0x80 ) {
+            fread(&u8, sizeof(uint8_t), 1, file);
+            if( u8 < 0x40) {
+                if( u8 >= 0x00 && u8 <= 0x07 )
+                    printf("add\t");
+                else if( u8 >= 0x08 && u8 <= 0x0f )
+                    printf("or\t");
+                else if( u8 >= 0x10 && u8 <= 0x17 )
+                    printf("adc\t");
+                else if( u8 >= 0x18 && u8 <= 0x1f )
+                    printf("sbb\t");
+                else if( u8 >= 0x20 && u8 <= 0x27 )
+                    printf("and\t");
+                else if( u8 >= 0x28 && u8 <= 0x2f )
+                    printf("sub\t");
+                else if( u8 >= 0x30 && u8 <= 0x37 )
+                    printf("xor\t");
+                else if( u8 >= 0x38 && u8 <= 0x3f )
+                    printf("cmp\t");
+                ModRM64_r1m(u8, file);
+                printf(", ");
+                imm8(file);
+                printf("\n");
+            }
+        }
         /* B8+r MOV imm16/32/64 */
         else if( u8 >= MOV_RAX_B8  && u8 <= MOV_RDI_B8) {
             if( (rex >> REX_W) & 1 ) { // check if 64bit operand

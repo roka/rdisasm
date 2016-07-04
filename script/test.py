@@ -200,5 +200,23 @@ class TestDisassembleRaw(unittest.TestCase):
             inst)
         disasm.stdout.close()
 
+    # 0x80
+    def test_80h(self):
+        self.create_bin("80050111111111800911801255801e22802755802a22803122803d3333333333")
+        inst = \
+            "add\tDWORD [rip+0x11111101], byte 0x11\n" +\
+            "or\tDWORD [rcx], byte 0x11\n" +\
+            "adc\tDWORD [rdx], byte 0x55\n" +\
+            "sbb\tDWORD [rsi], byte 0x22\n" +\
+            "and\tDWORD [rdi], byte 0x55\n" +\
+            "sub\tDWORD [rdx], byte 0x22\n" +\
+            "xor\tDWORD [rcx], byte 0x22\n" +\
+            "cmp\tDWORD [rip+0x33333333], byte 0x33"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
 if __name__ == "__main__":
     unittest.main()
