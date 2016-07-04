@@ -325,6 +325,14 @@ void disasm(uint64_t first_asm, FILE *file)
             pattern1( u8-SBB_18, file, rex);
         }
 
+        /* Logical AND 0x20-0x25 */
+        else if( u8 >= AND_20 && u8 <= AND_25 ) {
+            printf("and\t");
+            pattern1( u8-AND_20, file, rex);
+        }
+
+        /* Logical exclusive OR - 0x30 - 0x35 */
+
         /* REX 0x40-0x4f */
         else if( u8 == REX_40 ) {
             rex |= 1 << REX;

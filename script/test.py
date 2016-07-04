@@ -56,6 +56,21 @@ class TestDisassembleRaw(unittest.TestCase):
             inst)
         disasm.stdout.close()
 
+    # AND - Logical AND 0x20-0x25
+    def test_and(self):
+        self.create_bin("200621072208230924ff25ffffffff")
+        inst = "and\tDWORD [rsi], AL\n" +\
+            "and\tDWORD [rdi], eax\n" +\
+            "and\tCL, DWORD [rax]\n" +\
+            "and\tecx, DWORD [rcx]\n" +\
+            "and\tal, 0xff\n" +\
+            "and\teax, 0xffffffff"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
     # PUSH 0x50+r - PUSH 0x57
     def test_push(self):
         reg64 = [ "rax", "rcx", "rdx", "rbx", "rsp", "rbp", "rsi", "rdi" ]
