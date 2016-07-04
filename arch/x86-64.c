@@ -26,7 +26,7 @@ void ModRM64_r1m(char byte, FILE *file)
         } else if( (byte & MODRM) == MODRM_RSI ) {
             printf("DWORD [rsi");
         } else if( (byte & MODRM) == MODRM_RDI ) {
-            printf("DWORD [rsi");
+            printf("DWORD [rdi");
         } else if( (byte & MODRM) == MODRM_SIB ) {
             printf("TODO SIB");
         }
