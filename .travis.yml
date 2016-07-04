@@ -1,3 +1,7 @@
 language: c
 compiler: gcc
+python:
+  - "3.4"
+
 script: make
+    - python script/test.py
