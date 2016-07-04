@@ -304,31 +304,37 @@ void disasm(uint64_t first_asm, FILE *file)
         /* ADD - 0x00 - 0x05 */
         else if( u8 >= ADD_00 && u8 <= ADD_05 ) {
             printf("ADD\t");
-            pattern1( u8-ADD_00, file, rex);
+            pattern1(u8-ADD_00, file, rex);
         }
 
         /* OR - Logical inclusive OR 0x08-0d */
         else if( u8 >= OR_08 && u8 <= OR_0d ) {
             printf("OR\t");
-            pattern1( u8-OR_08, file, rex);
+            pattern1(u8-OR_08, file, rex);
         }
 
         /* ADC - Add with cary 0x10-0x15 */
         else if( u8 >= ADC_10 && u8 <= ADC_15 ) {
             printf("ADC\t");
-            pattern1( u8-ADC_10, file, rex);
+            pattern1(u8-ADC_10, file, rex);
         }
 
-        /* SBB - Subtraction with borrow 0x18-0x1c */
+        /* SBB - Subtraction with borrow 0x18-0x1d */
         else if( u8 >= SBB_18 && u8 <= SBB_1d ) {
             printf("sbb\t");
-            pattern1( u8-SBB_18, file, rex);
+            pattern1(u8-SBB_18, file, rex);
         }
 
         /* Logical AND 0x20-0x25 */
         else if( u8 >= AND_20 && u8 <= AND_25 ) {
             printf("and\t");
-            pattern1( u8-AND_20, file, rex);
+            pattern1(u8-AND_20, file, rex);
+        }
+
+        /* Subtraction 0x28-0x2d */
+        else if( u8 >= SUB_28 && u8 <= SUB_2d ) {
+            printf("sub\t");
+            pattern1(u8-SUB_28, file, rex);
         }
 
         /* Logical exclusive OR - 0x30 - 0x35 */

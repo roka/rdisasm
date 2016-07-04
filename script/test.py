@@ -71,6 +71,21 @@ class TestDisassembleRaw(unittest.TestCase):
             inst)
         disasm.stdout.close()
 
+    # Subtraction 0x28-0x2d
+    def test_sub(self):
+        self.create_bin("281029112a122b132cff2dffffffff")
+        inst = "sub\tDWORD [rax], DL\n" +\
+            "sub\tDWORD [rcx], edx\n" +\
+            "sub\tDL, DWORD [rdx]\n" +\
+            "sub\tedx, DWORD [rbx]\n" +\
+            "sub\tal, 0xff\n" +\
+            "sub\teax, 0xffffffff"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
     # PUSH 0x50+r - PUSH 0x57
     def test_push(self):
         reg64 = [ "rax", "rcx", "rdx", "rbx", "rsp", "rbp", "rsi", "rdi" ]
