@@ -86,6 +86,21 @@ class TestDisassembleRaw(unittest.TestCase):
             inst)
         disasm.stdout.close()
 
+    # Logical exclusive OR 0x30-0x35
+    def test_xor(self):
+        self.create_bin("3015feffffff31163217331834ff35ffffffff")
+        inst = "xor\tDWORD [rip+0xfffffffe], DL\n" +\
+            "xor\tDWORD [rsi], edx\n" +\
+            "xor\tDL, DWORD [rdi]\n" +\
+            "xor\tebx, DWORD [rax]\n" +\
+            "xor\tal, 0xff\n" +\
+            "xor\teax, 0xffffffff"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
     # PUSH 0x50+r - PUSH 0x57
     def test_push(self):
         reg64 = [ "rax", "rcx", "rdx", "rbx", "rsp", "rbp", "rsi", "rdi" ]

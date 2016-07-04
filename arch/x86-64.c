@@ -338,6 +338,10 @@ void disasm(uint64_t first_asm, FILE *file)
         }
 
         /* Logical exclusive OR - 0x30 - 0x35 */
+        else if( u8 >= XOR_30 && u8 <= XOR_35 ) {
+            printf("xor\t");
+            pattern1(u8-XOR_30, file, rex);
+        }
 
         /* REX 0x40-0x4f */
         else if( u8 == REX_40 ) {
