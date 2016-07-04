@@ -343,6 +343,12 @@ void disasm(uint64_t first_asm, FILE *file)
             pattern1(u8-XOR_30, file, rex);
         }
 
+        /* Compare two operands 0x38-0x3d */
+        else if( u8 >= CMP_38 && u8 <= 0x3d ) {
+            printf("cmp\t");
+            pattern1(u8-CMP_38, file, rex);
+        }
+
         /* REX 0x40-0x4f */
         else if( u8 == REX_40 ) {
             rex |= 1 << REX;
