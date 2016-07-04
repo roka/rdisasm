@@ -4,4 +4,6 @@ python:
   - "3.4"
 
 script: make
+
+after_script:
     - python script/test.py
