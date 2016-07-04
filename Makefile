@@ -17,3 +17,6 @@ rdisasm: disasm.o elf.o x86-64.o
 
 clean:
 	rm -f *.o a.out rdisasm
+
+test: rdisasm
+	python3 script/test.py
