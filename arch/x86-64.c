@@ -502,7 +502,7 @@ void disasm(uint64_t first_asm, FILE *file)
                 case JNLE_7f: printf("JNLE\t"); break;
             }
             fread(&u8, sizeof(uint8_t), 1, file);
-            printf("%x\n", (ftell(file)+u8-first_asm)&0xff);
+            printf("0x%x\n", ((ftell(file)+u8&0xff)-first_asm));
         }
         /* B8+r MOV imm16/32/64 */
         else if( u8 >= MOV_RAX_B8  && u8 <= MOV_RDI_B8) {

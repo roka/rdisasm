@@ -179,21 +179,21 @@ class TestDisassembleRaw(unittest.TestCase):
     def test_jumps(self):
         self.create_bin("70557155725573557455755576557755785579557a557b557c557d557fff")
         inst = \
-        "JO\t57\n" +\
-        "JNO\t59\n" +\
-        "JB\t5b\n" +\
-        "JNB\t5d\n" +\
-        "JZ\t5f\n" +\
-        "JNZ\t61\n" +\
-        "JBE\t63\n" +\
-        "JNBE\t65\n" +\
-        "JS\t67\n" +\
-        "JNS\t69\n" +\
-        "JP\t6b\n" +\
-        "JNP\t6d\n" +\
-        "JL\t6f\n" +\
-        "JNL\t71\n" +\
-        "JNLE\t1d"
+        "JO\t0x57\n" +\
+        "JNO\t0x59\n" +\
+        "JB\t0x5b\n" +\
+        "JNB\t0x5d\n" +\
+        "JZ\t0x5f\n" +\
+        "JNZ\t0x61\n" +\
+        "JBE\t0x63\n" +\
+        "JNBE\t0x65\n" +\
+        "JS\t0x67\n" +\
+        "JNS\t0x69\n" +\
+        "JP\t0x6b\n" +\
+        "JNP\t0x6d\n" +\
+        "JL\t0x6f\n" +\
+        "JNL\t0x71\n" +\
+        "JNLE\t0x1d"
 
         disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
         self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
