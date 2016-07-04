@@ -135,10 +135,9 @@
 
 #define PUSH_68     0x68    // imm16/32
 
-#define SUB_AX      0x2d
-#define INSB        0x6C    // Input from Port to String
-#define IMUL        0x69
-#define JS          0x78
+#define IMUL_69     0x69    // signed mul
+#define INSB_6c     0x6C    // Input from Port to String
+#define JS_78       0x78
 
 /* B8+r MOV imm16/32/64 */
 #define MOV_RAX_B8  0xb8

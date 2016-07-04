@@ -140,5 +140,15 @@ class TestDisassembleRaw(unittest.TestCase):
                 inst)
             disasm.stdout.close()
 
+    # IMUL 0x69
+    def test_imul(self):
+        self.create_bin("691e12341234")
+        inst = "imul\tebx, DWORD [rsi], dword 0x34123412"
+
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+
 if __name__ == "__main__":
     unittest.main()

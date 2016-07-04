@@ -440,6 +440,12 @@ void disasm(uint64_t first_asm, FILE *file)
             imm1632(file);
         }
 
+        else if( u8 == IMUL_69 ) {
+            printf("imul\t");
+            r163264_rm163264(file, rex);
+            printf(", ");
+            imm1632(file);
+        }
         /* B8+r MOV imm16/32/64 */
         else if( u8 >= MOV_RAX_B8  && u8 <= MOV_RDI_B8) {
             if( (rex >> REX_W) & 1 ) { // check if 64bit operand
