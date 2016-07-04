@@ -1,5 +1,6 @@
 # rdisasm 
-[![Build Status](https://travis-ci.org/stenbock/rdisasm.svg?branch=master)]
+![Build Status](https://travis-ci.org/stenbock/rdisasm.svg?branch=master)
+
 rdisasm is a x86-64 disassembler.
 
 ```
