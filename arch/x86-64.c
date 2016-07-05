@@ -3,6 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifndef __GNUC__
+# include <features.h>
+#endif
+
 /* decode r1 and the mod bits from the 32/64 ModRM byte */
 void ModRM64_r1m(char byte, FILE *file)
 {
@@ -95,7 +99,11 @@ void ModRM64(char byte, FILE *file)
 }
 
 /* r/m8, r8 */
+# if __GNUC_PREREQ(5,0)
 extern int __inline rm8_r8(FILE *file)
+#else
+int __inline rm8_r8(FILE *file)
+#endif
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -106,7 +114,11 @@ extern int __inline rm8_r8(FILE *file)
 }
 
 /* r8, r/m8 */
+# if __GNUC_PREREQ(5,0)
 extern int __inline r8_rm8(FILE *file)
+#else
+int __inline r8_rm8(FILE *file)
+#endif
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -118,7 +130,11 @@ extern int __inline r8_rm8(FILE *file)
 }
 
 /* r/m16/32/64, r/16/32/64 */
+# if __GNUC_PREREQ(5,0)
 extern __inline int rm163264_r163264(FILE *file, uint8_t rex)
+#else
+__inline int rm163264_r163264(FILE *file, uint8_t rex)
+#endif
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -147,7 +163,11 @@ extern __inline int rm163264_r163264(FILE *file, uint8_t rex)
 }
 
 /*  r/16/32/64, r/m16/32/64 */
+# if __GNUC_PREREQ(5,0)
 extern __inline int r163264_rm163264(FILE *file, uint8_t rex)
+#else
+__inline int r163264_rm163264(FILE *file, uint8_t rex)
+#endif
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -175,7 +195,11 @@ extern __inline int r163264_rm163264(FILE *file, uint8_t rex)
     return 0;
 }
 
+# if __GNUC_PREREQ(5,0)
 extern __inline int al_imm8(FILE *file)
+#else
+__inline int al_imm8(FILE *file)
+#endif
 {
     uint8_t u8;
     fread(&u8, sizeof(uint8_t), 1, file);
@@ -183,7 +207,11 @@ extern __inline int al_imm8(FILE *file)
     return 0;
 }
 
+# if __GNUC_PREREQ(5,0)
 extern __inline int eax_imm1632(FILE *file)
+#else
+__inline int eax_imm1632(FILE *file)
+#endif
 {
     uint32_t u32;
     fread(&u32, sizeof(uint32_t), 1, file);
@@ -191,7 +219,11 @@ extern __inline int eax_imm1632(FILE *file)
     return 0;
 }
 
+# if __GNUC_PREREQ(5,0)
 extern __inline int imm1632(FILE *file)
+#else
+__inline int imm1632(FILE *file)
+#endif
 {
     uint32_t u32;
     fread(&u32, sizeof(uint32_t), 1, file);
@@ -199,7 +231,11 @@ extern __inline int imm1632(FILE *file)
     return 0;
 }
 
+# if __GNUC_PREREQ(5,0)
 extern __inline int imm8(FILE *file)
+#else
+__inline int imm8(FILE *file)
+#endif
 {
     uint32_t u8;
     fread(&u8, sizeof(uint8_t), 1, file);
@@ -269,7 +305,11 @@ int addressOverride(char byte)
 }
 
 /* Pattern used to decode most instructions between 0x00 - 0x3d */
+# if __GNUC_PREREQ(5,0)
 extern inline int pattern1(uint8_t u8, FILE *file, uint8_t rex)
+# else
+__inline int pattern1(uint8_t u8, FILE *file, uint8_t rex)
+# endif
 {
     switch( (u8&0xff) ) {
         case 0:
