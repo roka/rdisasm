@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "bin/elf.h"
 #include "arch/x86-64.h"

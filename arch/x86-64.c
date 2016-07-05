@@ -95,27 +95,30 @@ void ModRM64(char byte, FILE *file)
 }
 
 /* r/m8, r8 */
-__inline rm8_r8(FILE *file)
+extern int __inline rm8_r8(FILE *file)
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
     ModRM64_r1m(byte, file);
     printf(", ");
     ModRM64_r2(byte, IA64_R8);
+    return 0;
 }
 
 /* r8, r/m8 */
-__inline r8_rm8(FILE *file)
+extern int __inline r8_rm8(FILE *file)
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
     ModRM64_r2(byte, IA64_R8);
     printf(", ");
     ModRM64_r1m(byte, file);
+
+    return 0;
 }
 
 /* r/m16/32/64, r/16/32/64 */
-__inline rm163264_r163264(FILE *file, uint8_t rex)
+extern __inline int rm163264_r163264(FILE *file, uint8_t rex)
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -140,10 +143,11 @@ __inline rm163264_r163264(FILE *file, uint8_t rex)
             ModRM64_r2(byte, IA64_R32);
         }
     }
+    return 0;
 }
 
 /*  r/16/32/64, r/m16/32/64 */
-__inline r163264_rm163264(FILE *file, uint8_t rex)
+extern __inline int r163264_rm163264(FILE *file, uint8_t rex)
 {
     uint8_t byte;
     fread(&byte, sizeof(uint8_t), 1, file);
@@ -168,34 +172,39 @@ __inline r163264_rm163264(FILE *file, uint8_t rex)
             ModRM64_r1m(byte, file);
         }
     }
+    return 0;
 }
 
-__inline al_imm8(FILE *file)
+extern __inline int al_imm8(FILE *file)
 {
     uint8_t u8;
     fread(&u8, sizeof(uint8_t), 1, file);
     printf("al, 0x%.2x", u8 & 0xff);
+    return 0;
 }
 
-__inline eax_imm1632(FILE *file)
+extern __inline int eax_imm1632(FILE *file)
 {
     uint32_t u32;
     fread(&u32, sizeof(uint32_t), 1, file);
     printf("eax, 0x%x", u32);
+    return 0;
 }
 
-__inline imm1632(FILE *file)
+extern __inline int imm1632(FILE *file)
 {
     uint32_t u32;
     fread(&u32, sizeof(uint32_t), 1, file);
     printf("dword 0x%x", u32);
+    return 0;
 }
 
-__inline imm8(FILE *file)
+extern __inline int imm8(FILE *file)
 {
     uint32_t u8;
     fread(&u8, sizeof(uint8_t), 1, file);
     printf("byte 0x%x", u8 & 0xff);
+    return 0;
 }
 
 
@@ -260,7 +269,7 @@ int addressOverride(char byte)
 }
 
 /* Pattern used to decode most instructions between 0x00 - 0x3d */
-__inline pattern1(uint8_t u8, FILE *file, uint8_t rex)
+extern inline int pattern1(uint8_t u8, FILE *file, uint8_t rex)
 {
     switch( (u8&0xff) ) {
         case 0:
@@ -277,6 +286,7 @@ __inline pattern1(uint8_t u8, FILE *file, uint8_t rex)
             eax_imm1632(file); break;
     }
     printf("\n");
+    return 0;
 }
 
 void disasm(uint64_t first_asm, FILE *file)
@@ -527,6 +537,31 @@ void disasm(uint64_t first_asm, FILE *file)
                 ModRM64_r1m(u8, file);
                 printf(", ");
                 imm8(file);
+                printf("\n");
+            }
+        }
+	else if( u8 == 0x81 ) {
+            fread(&u8, sizeof(uint8_t), 1, file);
+            if( u8 < 0x40) {
+                if( u8 >= 0x00 && u8 <= 0x07 )
+                    printf("add\t");
+                else if( u8 >= 0x08 && u8 <= 0x0f )
+                    printf("or\t");
+                else if( u8 >= 0x10 && u8 <= 0x17 )
+                    printf("adc\t");
+                else if( u8 >= 0x18 && u8 <= 0x1f )
+                    printf("sbb\t");
+                else if( u8 >= 0x20 && u8 <= 0x27 )
+                    printf("and\t");
+                else if( u8 >= 0x28 && u8 <= 0x2f )
+                    printf("sub\t");
+                else if( u8 >= 0x30 && u8 <= 0x37 )
+                    printf("xor\t");
+                else if( u8 >= 0x38 && u8 <= 0x3f )
+                    printf("cmp\t");
+                ModRM64_r1m(u8, file);
+                printf(", ");
+                imm1632(file);
                 printf("\n");
             }
         }
