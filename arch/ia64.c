@@ -184,6 +184,7 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
     instr.primary_opcode = 0;
     instr.secondary_opcode = 0;
     instr.of_prefix = 0;
+    instr.register_field = 0;
     bzero(instr_str, BUF_SIZE);
 
     rewind(file);
