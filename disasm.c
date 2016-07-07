@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "bin/elf.h"
-#include "arch/x86-64.h"
+#include "arch/ia64.h"
 #include "defines.h"
 
 int verbose = 0;
@@ -77,7 +77,8 @@ int main(int argc, char *argv[])
     uint64_t u64;
 
     if( arch_type == ARCH_IA64 || arch_type == 0) {
-        disasm(first_asm, infile);
+        //disasm(first_asm, infile);
+        ia64_disasm(first_asm, first_asm+1000, infile);
     } else if( arch_type == ARCH_IA32) {
         printf("Arch x86 is not supported\n");
         abort();

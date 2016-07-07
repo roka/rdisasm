@@ -6,14 +6,14 @@ elf.o:
 disasm.o:
 	gcc -c disasm.c
 
-x86-64.o:
-	gcc -c arch/x86-64.c
+ia64.o:
+	gcc -c arch/ia64.c
 
 cpu.o:
 	gcc -c tc/cpu.c
 
-rdisasm: disasm.o elf.o x86-64.o
-	gcc disasm.o elf.o x86-64.o -o rdisasm
+rdisasm: disasm.o elf.o ia64.o
+	gcc disasm.o elf.o ia64.o -o rdisasm
 
 clean:
 	rm -f *.o a.out rdisasm
