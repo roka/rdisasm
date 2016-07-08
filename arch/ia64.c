@@ -310,7 +310,7 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
                     case __REL_8:
                         byte = imm8(file);
                         sprintf(instr_str + strlen(instr_str),
-                            "0x%x", ((ftell(file)+byte&0xff)));
+                            "0x%lx", ((ftell(file)+byte&0xff)));
                         break;
                     case __DX:
                         sprintf(instr_str + strlen(instr_str),
