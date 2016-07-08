@@ -7,16 +7,15 @@ compiler: gcc
 
 env:
   global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "OashDWqRuhTMtiRqOxrfUKpmiRTffayjj/ZF0tjg/ft/c1Dyg2450y9t8y02Wp2PJgAcLHn/QwUHvbNhEexy7ZUWXu1L4/KKKLwcK7Dibx3fWxwYfqMZSOC/yzFj761hIwamki4P7vGJsFST2BJ+0l8Rl5svjoIUU7DW6jbxi8sf4T/4GzpJkQcEuf7DUUfaWBBcdCQQjE2Z4vQcpDMYjUQpXnjxUfRil3hb51CQQR07zJbhMe/zRLV7wMb3qN0u2+k/OOSMpc1n5CNXIhoJKQvXyDHCyafr+XhZRduK3nIzIH3T8kWOug/dIvuZr8YtHxlAPXM+w8KWDhK35o8U22EjIaOknWFEzbihukH4xLmwpoLGedg5vEcrNfLERb9Il2JDstsW1C7etiXFfpsAIlAMGPtAvQrHZMGuNafKlwCRCpOTFd9u7WxV4UrxszZ/IpdrOueZhDika5udXRuNO5EEn8KuPQh2NvSw0mNwC917XjuRLWacvrGj7YCZ70Nc5z00eexmrUxZDJA5O0qL1GrsfRzXg5Jn5y5qauKEEoXu35kmnzdGz/HXcc0EBKfzb0KVMfGj9e/MVDtwrwF7q4Jw+y7rGvTy3jOOHHmOcUffZ4dAMfhv9Fc87Ja/G5he+H8rXOR5ZuCWiHNzxvw6xalt/pW/x6sSok7OzIlFptc="
+    secure: S0m3LyAtyxpeHBtLFWFCHgD0FbLYf1RhGBhLAo/9T1QpJDHDeNRm3BkjNSer/Rafs02BTDeZ4+ZCLjIGrpQTBdH8snMv07sqrr63lA/3o4Q/gKnfLZnse6TAe1o/+xzZeprbwSoigKeSOiKTcysnqbSWK5UYGc5MP65UI6PjVDQAlbNotM/IAr0Jf0ncIJHlICvQ3c6VfyEzAbHvWsOaaEFZ+KG0TY0I3uuwfMKFOrsTarPxJNv8fBXakvJ5SByNurd0lmMjQJGFQgEraUdJ9nd0vuoG/Niv2gRcYQ0mVwH0hatIG1GROhIAQ9y6FyibQvWe/2AMpW9E+kB7zIz7E0ZIHSJmh6dPdniXbi/9UKeNMsZWTFfnuUtGankHcwYwfqd1lHJ2+qAJK6xMnt7HMSzdqwxyWcrfM02btS6TZ76A24N79PAkN+xIDac8rvtW+eanAEbk4LeFq46bOH7sWVmoGiKD63Yjrd/Bg3pY2hKxQj2T+4YwQ2xFdlPjP517cIIYHGUrW4IE8PniRm23VjLEGWcPcl61TkXY/KajJ9gfmyR3EnnUG+MK9rZ6fzbonir3ZBw21t38qsQ53Wh4614/KwrmEvDEzUFPTIUqxKOsoKchV9ioZPXOhOSgHtIA3f84ZoWdXk1cMymPXDhD5+BwfrbK3pvGpvkUn85XL8s=
+
 
 addons:
   coverity_scan:
     project:
       name: "stenbock/rdisasm"
       description: "Build submitted via Travis CI"
-    notification_email: s.r.karlsson+coverity@gmail.com
+    notification_email: s.r.karlsson@gmail.com
     build_command_prepend: "make clean"
     build_command: "make"
     branch_pattern: coverity_scan
