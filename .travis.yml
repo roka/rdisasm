@@ -5,4 +5,20 @@ before_install:
 language: c
 compiler: gcc
 
+env:
+  global:
+    secure: "UOQtu2DRx+DX4TTCUVieqafVk4IKiSFhX1yuJ0INEdV4bMeMMtI0ITIbBI7YHS/Ka48seXeKxAhvdH9rw44Gd72LY56UBRnF3SksrzIr7KcoSIaU6QCv0nXx0Ag4K3l/d1G0LecKlW6DePRsf+Fdm5hFMbZFZMxXAYBMkLgAUuajVNhI+A5u9h0HU9nfnA+aSrq2xweJIOmDRPepBSjRdN22AUMP1f5e9lHUxOv9SWtEfQoj2icI8eztIZxMT/M5TBH1tac/XxNVn1bxM/7mZhesJPrzpwsht8kjVQlBqWZ+O838SxzrWaw0oubyMmO6ZEx8hdmJkUiqHS/ckr1NpiQB+8WDRZWLQZRcyaWQeksFmuDGuUv643wEFKU9GSzX6qHwJ9mAvAFr2GpxBepbj2EnlcAKLjmGyPJJyVRljdoZK/BJd0qp1gd6f3NvUihiAmPt4oSBlpkpaCPWrScH9xDypxh4DTkIwVv3hwb12hpaFJtx6C5+JCNNHTmUOYa5TPn6Y+GKrtkYrLL/NNWVLzXdc3nLsuoyxJWE9bYb9uQYuRmXuVbgbo0zMyKBXZsvm0nOzc+8tx5wFfG1ohGyuiFUaDilm6fcIPcdNE97vbUmPfpFQ3VmBNNseVSjZSwIZN744yUTL0ilpE2ZDzonZhUdWxyzTZmqNpCQWl/vgrc="
+
+
+addons:
+  coverity_scan:
+    project:
+      name: "stenbock/rdisasm"
+      description: "Build submitted via Travis CI"
+    notification_email: s.r.karlsson@gmail.com
+    build_command_prepend: "make clean"
+    build_command: "make"
+    branch_pattern: coverity_scan
+
+
 script: make test
