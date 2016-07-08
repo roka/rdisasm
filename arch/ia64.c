@@ -138,7 +138,7 @@ uint64_t imm64(FILE *file)
 int ia64_search_inst(ia64_instruction instr)
 {
     int i;
-    for(i=0; i < 112; i++) {
+    for(i=0; i < IA64_NUM_INSTR; i++) {
         if(instr.primary_opcode == ia64_optab[i].primary_opcode &&
             instr.secondary_opcode == ia64_optab[i].secondary_opcode &&
             instr.of_prefix == ia64_optab[i].of_prefix &&
@@ -179,6 +179,7 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
     int pos;
     char instr_str[BUF_SIZE];
     int i;
+    size_t rb;
 
     ia64_instruction instr;
     instr.primary_opcode = 0;
@@ -190,9 +191,8 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
     rewind(file);
     fseek(file, start, SEEK_SET); // seek to the first assembly instruction
 
-    for(start=start ; start < end && (fread(&byte, sizeof(uint8_t), 1, file) == 1); start++)
+    for(start=start ; start < end && (rb = fread(&byte, sizeof(uint8_t), 1, file)) == 1; start++)
     {
-        //fread(&byte, sizeof(uint8_t), 1, file);
         if(instr.primary_opcode == 0x00 && instr.of_prefix == 0x00) {
             switch(byte) {
                 case 0x0f: // Two-byte instruction
@@ -223,14 +223,14 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
 
         pos = ia64_search_inst(instr);
         if(pos == -1) { // search instr.register_field if no instr was found
-            fread(&byte, sizeof(uint8_t), 1, file);
-            instr.register_field = calc_regfield(byte);
-            fseek(file, -1, SEEK_CUR);
-            if(instr.register_field != 0)
-                pos = ia64_search_inst(instr);
+            if(fread(&byte, sizeof(uint8_t), 1, file) > 0) {
+                instr.register_field = calc_regfield(byte);
+                fseek(file, -1, SEEK_CUR);
+                if(instr.register_field != 0)
+                    pos = ia64_search_inst(instr);
+            }
         }
         if( pos != -1 ) {
-            //printf("%s\t", ia64_optab[pos].mnemonic);
             sprintf(instr_str, "%s\t", ia64_optab[pos].mnemonic);
 
             /* get/print operands */
@@ -335,6 +335,8 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
 
                 }
             }
+        } else {
+            sprintf(instr_str, "db\t0x%x", byte&0xff);
         }
 
         printf("%s\n", instr_str);
