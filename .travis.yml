@@ -5,4 +5,21 @@ before_install:
 language: c
 compiler: gcc
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "OashDWqRuhTMtiRqOxrfUKpmiRTffayjj/ZF0tjg/ft/c1Dyg2450y9t8y02Wp2PJgAcLHn/QwUHvbNhEexy7ZUWXu1L4/KKKLwcK7Dibx3fWxwYfqMZSOC/yzFj761hIwamki4P7vGJsFST2BJ+0l8Rl5svjoIUU7DW6jbxi8sf4T/4GzpJkQcEuf7DUUfaWBBcdCQQjE2Z4vQcpDMYjUQpXnjxUfRil3hb51CQQR07zJbhMe/zRLV7wMb3qN0u2+k/OOSMpc1n5CNXIhoJKQvXyDHCyafr+XhZRduK3nIzIH3T8kWOug/dIvuZr8YtHxlAPXM+w8KWDhK35o8U22EjIaOknWFEzbihukH4xLmwpoLGedg5vEcrNfLERb9Il2JDstsW1C7etiXFfpsAIlAMGPtAvQrHZMGuNafKlwCRCpOTFd9u7WxV4UrxszZ/IpdrOueZhDika5udXRuNO5EEn8KuPQh2NvSw0mNwC917XjuRLWacvrGj7YCZ70Nc5z00eexmrUxZDJA5O0qL1GrsfRzXg5Jn5y5qauKEEoXu35kmnzdGz/HXcc0EBKfzb0KVMfGj9e/MVDtwrwF7q4Jw+y7rGvTy3jOOHHmOcUffZ4dAMfhv9Fc87Ja/G5he+H8rXOR5ZuCWiHNzxvw6xalt/pW/x6sSok7OzIlFptc="
+
+addons:
+  coverity_scan:
+    project:
+      name: "stenbock/rdisasm"
+      description: "Build submitted via Travis CI"
+    notification_email: s.r.karlsson+coverity@gmail.com
+    build_command_prepend: "make clean"
+    build_command: "make"
+    branch_pattern: coverity_scan
+
+
 script: make test
