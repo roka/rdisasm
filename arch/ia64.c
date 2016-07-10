@@ -47,8 +47,8 @@ int ia64_rm_163264(uint8_t byte, FILE *file, int mode, char *instr_str)
             fread(&i8, sizeof(int8_t), 1, file);
             sprintf(instr_str+strlen(instr_str), "+0x%x]", i8);
         } else if ( ((byte & MOD3) == MOD2) ) {
-            fread(&i32, sizeof(int32_t), 1, file);
-            sprintf(instr_str+strlen(instr_str), "+0x%x]", i32);
+            if(fread(&i32, sizeof(int32_t), 1, file) == 1)
+                sprintf(instr_str+strlen(instr_str), "+0x%x]", i32);
         }
     } else {
         if( (byte & MODRM) == MODRM_RAX ) {
@@ -109,29 +109,33 @@ int ia64_r_163264(uint8_t byte, int mode, char *instr_str)
 uint8_t imm8(FILE *file)
 {
     uint8_t byte;
-    fread(&byte, sizeof(uint8_t), 1, file);
-    return byte;
+    if( fread(&byte, sizeof(uint8_t), 1, file) == 1)
+        return byte;
+    return 0;
 }
 
 uint16_t imm16(FILE *file)
 {
     uint16_t word;
-    fread(&word, sizeof(uint16_t), 1, file);
-    return word;
+    if( fread(&word, sizeof(uint16_t), 1, file) == 1 )
+        return word;
+    return 0;
 }
 
 uint32_t imm32(FILE *file)
 {
     uint32_t dword;
-    fread(&dword, sizeof(uint32_t), 1, file);
-    return dword;
+    if( fread(&dword, sizeof(uint32_t), 1, file) == 1)
+        return dword;
+    return 0;
 }
 
 uint64_t imm64(FILE *file)
 {
     uint64_t qword;
-    fread(&qword, sizeof(uint8_t), 1, file);
-    return qword;
+    if( fread(&qword, sizeof(uint8_t), 1, file) == 1)
+        return qword;
+    return 0;
 }
 
 /* Search for a instruction in ia64_optab, returns position or -1 if not found */
@@ -189,7 +193,8 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
     bzero(instr_str, BUF_SIZE);
 
     rewind(file);
-    fseek(file, start, SEEK_SET); // seek to the first assembly instruction
+    if( fseek(file, start, SEEK_SET) != 0 ) // seek to the first assembly instruction
+        return; // error
 
     for(start=start ; start < end && (rb = fread(&byte, sizeof(uint8_t), 1, file)) == 1; start++)
     {
