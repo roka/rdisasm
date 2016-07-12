@@ -180,7 +180,7 @@ uint8_t calc_regfield(uint8_t u8)
 void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
 {
     uint8_t byte=0;
-    int pos;
+    int pos=-1;
     char instr_str[BUF_SIZE];
     int i;
     size_t rb;
@@ -226,7 +226,17 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
         /* Read Opcodes */
         instr.primary_opcode = byte;
 
-        pos = ia64_search_inst(instr);
+        /* Search for 2 byte instruction */
+        if(fread(&byte, sizeof(uint8_t), 1, file) > 0) {
+            instr.secondary_opcode = byte;
+            pos = ia64_search_inst(instr);
+            if(pos == -1) {
+                instr.secondary_opcode = 0;
+                fseek(file, -1, SEEK_CUR);
+            }
+        }
+        if(pos == -1)
+            pos = ia64_search_inst(instr); // search for 1 byte instruction
         if(pos == -1) { // search instr.register_field if no instr was found
             if(fread(&byte, sizeof(uint8_t), 1, file) > 0) {
                 instr.register_field = calc_regfield(byte);
@@ -337,6 +347,10 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
                         sprintf(instr_str + strlen(instr_str),
                             "byte [rdi]");
                         break;
+                    case __STL:
+                        sprintf(instr_str + strlen(instr_str),
+                            "stl");
+                        break;
 
                 }
             }
@@ -349,6 +363,7 @@ void ia64_disasm(uint64_t start, uint64_t end, FILE *file)
         instr.secondary_opcode = 0;
         instr.of_prefix = 0;
         instr.register_field = 0;
+        pos = -1;
         bzero(instr_str, BUF_SIZE);
     }
 

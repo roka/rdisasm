@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 
-#define IA64_NUM_INSTR  236
+#define IA64_NUM_INSTR (sizeof(ia64_optab)/sizeof(ia64_optab[1]))
+//236
 
 #define __RM8       0x01
 #define __R8        0x02

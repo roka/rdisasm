@@ -225,6 +225,24 @@ class TestDisassembleRaw(unittest.TestCase):
         self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
             inst)
         disasm.stdout.close()
+"""
+    def test_d8h(self):
+        self.create_bin("D800D808D810D8D1D818D809D820D828D830D838")
+        inst = "fadd\tdword [rax]\n" +\
+        "fmul\tdword [rax]\n" +\
+        "fcom\tdword [rax]\n" +\
+        "fcom\tstl\n" +\
+        "fcomp\tdword [rax]\n" +\
+        "fmul\tdword [rcx]\n" +\
+        "fsub\tdword [rax]\n" +\
+        "fsubr\tdword [rax]\n" +\
+        "fdiv\tdword [rax]\n" +\
+        "fdivr\tdword [rax]"
 
+        disasm = subprocess.Popen(["./rdisasm","-braw", "tmp.bin"], stdout=subprocess.PIPE)
+        self.assertEqual(str(disasm.stdout.read(), encoding="utf-8").rstrip(),
+            inst)
+        disasm.stdout.close()
+"""
 if __name__ == "__main__":
     unittest.main()
